@@ -1,3 +1,3 @@
 # IconHack
 
-This is where she makes a mod.
+This simple Geode mod unlocks all icons and colors.
