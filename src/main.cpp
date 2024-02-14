@@ -115,8 +115,6 @@ class $modify(CharacterColorPage) {
 
 		this->setID("CharacterColorPage");
 
-
-
 		CCSprite* randomize_box;
 
 		randomize_box = ButtonSprite::create("Randomize!");
@@ -125,12 +123,12 @@ class $modify(CharacterColorPage) {
 
 		auto randomize_btn = CCMenuItemSpriteExtra::create(randomize_box, this, menu_selector(IconHack::randomize_icons));
 
-
-		addChild(menu);
+		CCLayer* layer = static_cast<CCLayer*>(getChildren()->objectAtIndex(0)); // make it transition with the rest of the screen
+		
 		menu->addChild(randomize_btn);
+		layer->addChild(menu); // added the menu to layer so it is effected by the transition :^) 
 		randomize_box->setScale(0.5);
 		menu->setPosition({305, 293});
-
 
 		return result;
 	}
@@ -145,7 +143,6 @@ class $modify(GJGarageLayer) {
 	bool init() {
 
 		iconhack = Mod::get()->getSavedValue<bool>("is-enabled", true);
-
 
 		bool result = GJGarageLayer::init();
 		auto director = CCDirector::sharedDirector();
