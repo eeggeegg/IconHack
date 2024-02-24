@@ -12,10 +12,10 @@
 	"developer": "egg & Xanii",
 	"description": "Unlocks all icons and colors, also adds an option to randomize them in the coloring menu!",
 	"settings": {
-		"saveiconsfix": {
+		"disablerandomize": {
 			"default": false,
-			"name": "Save Icons Fix",
-			"description": "A fix for icons not properly loading in some cases.",
+			"name": "Disable Randomize Button",
+			"description": "Removes the randomize button from the color page.",
 			"type": "bool"
 		}
 	}
