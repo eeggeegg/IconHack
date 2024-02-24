@@ -4,22 +4,74 @@
 #include <Geode/modify/GameManager.hpp>
 #include <Geode/modify/GJGarageLayer.hpp>
 #include <Geode/modify/CharacterColorPage.hpp>
+//#include <Geode/modify/CCMenu.hpp>
+#include <Geode/ui/BasedButtonSprite.hpp>
+
 
 #include <iostream>
 #include <random>
+#include <ctime>
 
 using namespace geode::prelude;
 
 CCSprite* box;
 bool iconhack = false;
 
+// shoutout someone
+void saveIcons()
+{
+	Mod::get()->setSavedValue<int>("icons/cube", GameManager::get()->m_playerFrame);
+	Mod::get()->setSavedValue<int>("icons/ship", GameManager::get()->m_playerShip);
+	Mod::get()->setSavedValue<int>("icons/ball", GameManager::get()->m_playerBall);
+	Mod::get()->setSavedValue<int>("icons/ufo", GameManager::get()->m_playerBird);
+	Mod::get()->setSavedValue<int>("icons/wave", GameManager::get()->m_playerDart);
+	Mod::get()->setSavedValue<int>("icons/robot", GameManager::get()->m_playerRobot);
+	Mod::get()->setSavedValue<int>("icons/spider", GameManager::get()->m_playerSpider);
+	Mod::get()->setSavedValue<int>("icons/swing", GameManager::get()->m_playerSwing);
+	Mod::get()->setSavedValue<int>("icons/color", GameManager::get()->m_playerColor);
+	Mod::get()->setSavedValue<int>("icons/color2", GameManager::get()->m_playerColor2);
+	Mod::get()->setSavedValue<int>("icons/colorglow", GameManager::get()->m_playerGlowColor);
+	Mod::get()->setSavedValue<int>("icons/streak", GameManager::get()->m_playerStreak);
+	Mod::get()->setSavedValue<int>("icons/shipfire", GameManager::get()->m_playerShipFire);
+	Mod::get()->setSavedValue<int>("icons/death", GameManager::get()->m_playerDeathEffect);
+	Mod::get()->setSavedValue<int>("icons/jetpack", GameManager::get()->m_playerJetpack);
+	Mod::get()->setSavedValue<int>("icons/glow", GameManager::get()->m_playerGlow);
+}
+
+void loadIcons()
+{
+	GameManager::get()->m_playerFrame = Mod::get()->getSavedValue<int>("icons/cube", GameManager::get()->m_playerFrame);
+	GameManager::get()->m_playerShip = Mod::get()->getSavedValue<int>("icons/ship", GameManager::get()->m_playerShip);
+	GameManager::get()->m_playerBall = Mod::get()->getSavedValue<int>("icons/ball", GameManager::get()->m_playerBall);
+	GameManager::get()->m_playerBird = Mod::get()->getSavedValue<int>("icons/ufo", GameManager::get()->m_playerBird);
+	GameManager::get()->m_playerDart = Mod::get()->getSavedValue<int>("icons/wave", GameManager::get()->m_playerDart);
+	GameManager::get()->m_playerRobot = Mod::get()->getSavedValue<int>("icons/robot", GameManager::get()->m_playerRobot);
+	GameManager::get()->m_playerSpider = Mod::get()->getSavedValue<int>("icons/spider", GameManager::get()->m_playerSpider);
+	GameManager::get()->m_playerSwing = Mod::get()->getSavedValue<int>("icons/swing", GameManager::get()->m_playerSwing);
+	GameManager::get()->m_playerColor = Mod::get()->getSavedValue<int>("icons/color", GameManager::get()->m_playerColor);
+	GameManager::get()->m_playerColor2 = Mod::get()->getSavedValue<int>("icons/color2", GameManager::get()->m_playerColor2);
+	GameManager::get()->m_playerGlowColor = Mod::get()->getSavedValue<int>("icons/colorglow", GameManager::get()->m_playerGlowColor);
+	GameManager::get()->m_playerStreak = Mod::get()->getSavedValue<int>("icons/streak", GameManager::get()->m_playerStreak);
+	GameManager::get()->m_playerShipFire = Mod::get()->getSavedValue<int>("icons/shipfire", GameManager::get()->m_playerShipFire);
+	GameManager::get()->m_playerDeathEffect = Mod::get()->getSavedValue<int>("icons/death", GameManager::get()->m_playerDeathEffect);
+	GameManager::get()->m_playerJetpack = Mod::get()->getSavedValue<int>("icons/jetpack", GameManager::get()->m_playerJetpack);
+	GameManager::get()->m_playerDeathEffect = Mod::get()->getSavedValue<int>("icons/death", GameManager::get()->m_playerDeathEffect);
+	GameManager::get()->m_playerJetpack = Mod::get()->getSavedValue<int>("icons/jetpack", GameManager::get()->m_playerJetpack);
+	GameManager::get()->m_playerGlow = Mod::get()->getSavedValue<int>("icons/glow", GameManager::get()->m_playerGlow);
+}
+
+bool attemptLoadIcons() {
+	if (Mod::get()->getSavedValue<int>("icons/cube")) {
+		loadIcons();
+	}
+	return false;
+}
 
 class IconHack {
 	public:
 		void icon_toggle(CCObject*);
 		void randomize_icons(CCObject*);
 		void recursive_seticon(int, IconType);
-
 
 };
 
@@ -105,15 +157,30 @@ void IconHack::randomize_icons(CCObject* sender) {
 
 	colorpage->onClose(nullptr);
 
+	//void(*) function = reinterpret_cast<void*>(geode::base::get() + 0x608A0);
+
+
+
+
+	//FLAlertLayer::create("Icon Hack", "Icons and colors have been <cp>randomized</c>!", "OK")->show();
 }
 
 
+
+
+
+
+
+
+//0x5f3bb0
 class $modify(CharacterColorPage) {
 	
 	bool init() {
 		bool result = CharacterColorPage::init();
 
 		this->setID("CharacterColorPage");
+
+
 
 		CCSprite* randomize_box;
 
@@ -123,26 +190,70 @@ class $modify(CharacterColorPage) {
 
 		auto randomize_btn = CCMenuItemSpriteExtra::create(randomize_box, this, menu_selector(IconHack::randomize_icons));
 
-		CCLayer* layer = static_cast<CCLayer*>(getChildren()->objectAtIndex(0)); // make it transition with the rest of the screen
-		
+
+		addChild(menu);
 		menu->addChild(randomize_btn);
-		layer->addChild(menu); // added the menu to layer so it is effected by the transition :^) 
 		randomize_box->setScale(0.5);
+		//randomize_btn->setScale(0.5);
+
+
 		menu->setPosition({305, 293});
+
 
 		return result;
 	}
 
 
 };
+//0x608A0
+/*
+void CharacterColorPage_onClose(MenuLayer* self, CCObject* sender) {
+    log::info("Hook reached!");
+    // You can call the original by calling it - in this case, since the 
+    // original is in bindings, you can just call it the same way as you 
+    // would with $modify
+    // TODO: How to call original manually
+    //self->onNewgrounds(sender);
+   // log::info("After original!");
+}
+
+$execute {
+    Mod::get()->hook(
+        reinterpret_cast<void*>(geode::base::get() + 0x608A0), // address
+        &CharacterColorPage_onClose, // detour
+        "CharacterColorPage::onClose", // display name, shows up on the console
+        tulip::hook::TulipConvention::Thiscall // calling convention
+    );
+}
+*/
+
+
+
+$execute {
+	auto value = Mod::get()->getSettingValue<bool>("saveiconsfix");
+	if(value) {
+		attemptLoadIcons();
+	}
+    /*listenForSettingChanges("saveiconsfix", +[](bool value) {
+        
+		attemptLoadIcons();
+
+    });*/
+}
+
 
 class $modify(GJGarageLayer) {
 
-
+	void onBack(cocos2d::CCObject* sender) {
+		saveIcons();
+		GJGarageLayer::onBack(sender);
+	}
 
 	bool init() {
 
 		iconhack = Mod::get()->getSavedValue<bool>("is-enabled", true);
+
+
 
 		bool result = GJGarageLayer::init();
 		auto director = CCDirector::sharedDirector();
@@ -177,11 +288,13 @@ class $modify(GJGarageLayer) {
 		}
 
 
-
 		addChild(menu);
 		addChild(label);
 		return result;
 	}
+
+
+
 };
 
 
@@ -209,3 +322,6 @@ class $modify(GameManager) {
 		return result;
 	}
 };
+
+
+
